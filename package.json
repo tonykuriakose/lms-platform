@@ -1,7 +1,7 @@
 {
   "name": "lms-platform",
   "version": "1.0.0",
-  "description": "Learning Management System with Next.js, GraphQL, and Clean Architecture",
+  "description": "LMS with Next.js, GraphQL, and Clean Architecture",
   "private": true,
   "workspaces": [
     "apps/*",
