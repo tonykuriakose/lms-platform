@@ -8,19 +8,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "dev": "npm run dev:web",
     "dev:web": "npm run dev --workspace=apps/web",
-    "dev:api": "npm run dev --workspace=apps/api",
-    "build": "npm run build --workspaces",
-    "build:web": "npm run build --workspace=apps/web",
-    "build:api": "npm run build --workspace=apps/api",
-    "db:generate": "npm run db:generate --workspace=packages/database",
-    "db:migrate": "npm run db:migrate --workspace=packages/database",
-    "db:studio": "npm run db:studio --workspace=packages/database",
-    "docker:dev": "docker-compose -f docker-compose.dev.yml up -d",
-    "docker:down": "docker-compose -f docker-compose.dev.yml down",
-    "lint": "npm run lint --workspaces",
-    "type-check": "npm run type-check --workspaces"
+    "build": "npm run build --workspace=apps/web",
+    "build:web": "npm run build --workspace=apps/web"
   },
   "engines": {
     "node": ">=18.0.0",
