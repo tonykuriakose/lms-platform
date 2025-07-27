@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: lms-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lms_user
+      POSTGRES_PASSWORD: lms_password
+      POSTGRES_DB: lms_database
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - lms-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: lms-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass redis_password
+    networks:
+      - lms-network
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: lms-redis-commander
+    hostname: redis-commander
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379:0:redis_password
+    depends_on:
+      - redis
+    networks:
+      - lms-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: lms-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@lms.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - lms-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  pgadmin_data:
+
+networks:
+  lms-network:
+    driver: bridge
